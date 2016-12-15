@@ -1,0 +1,19 @@
+{
+    "name": "FAQ",
+    "description": "Build tools for Dreamgrove FAQ Development",
+    "main": "gulpfile.js",
+    "author": "Gustav Lindqvist",
+    "license": "MIT",
+    "dependencies": {
+        "gulp": "*",
+        "gulp-sass": "*",
+        "gulp-sourcemaps": "*",
+        "gulp-csscomb": "*",
+        "gulp-clean-css": "*",
+        "gulp-rename": "*",
+        "gulp-autoprefixer": "*",
+        "gulp-plumber": "*",
+        "browser-sync": "*",
+        "gulp-gzip": "*"
+    }
+}
