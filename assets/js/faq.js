@@ -5,7 +5,17 @@ var FAQ = (function () {
      * Runs the script.
      */
     var initialize = function() {
-        API.getData('1vbYagCkfotuqbpvBr_skmw7Sz43UoprmEiXKatTMp0E', function(data){
+        API.getData('1vbYagCkfotuqbpvBr_skmw7Sz43UoprmEiXKatTMp0E', function(FAQEntries){
+            var FAQList = $('#faq-list');
+            for(var i = 0; i < FAQEntries.length; i++) {
+                if(FAQEntries[i].status === 'Published'){
+                    FAQList.append('\
+                    <article class="faq-entry" id="'+FAQEntries[i].id+'">\
+                        <h2 class="faq-entry--question">'+FAQEntries[i].question+'</h2>\
+                        <section class="faq-entry--answer">'+FAQEntries[i].answer+'</section>\
+                    </article>');
+                }
+            }
         });
     };
 
@@ -26,7 +36,7 @@ var FAQ = (function () {
                     id: data.feed.entry[i].id.$t.substring(data.feed.entry[i].id.$t.lastIndexOf("/") + 1),
                     status: data.feed.entry[i].gsx$status.$t,
                     question: data.feed.entry[i].gsx$question.$t,
-                    answer: data.feed.entry[i].gsx$answer.$t,
+                    answer: data.feed.entry[i].gsx$answer.$t
                 });
             }
             return FAQEntries;

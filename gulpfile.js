@@ -16,7 +16,7 @@ gulp.task('styles', function() {
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(rename({
-            basename: 'libguides.2.0.jul'
+            basename: 'dreamgrove-faq'
         }))
         .pipe(sass())
         .pipe(autoprefixer())
@@ -31,7 +31,7 @@ gulp.task('serve', ['styles'], function() {
         port: 3000
     });
     gulp.watch('sass/**/*.scss', ['styles']);
-    gulp.watch('**/**/*.html').on('change', reload);
+    gulp.watch('index.html').on('change', reload);
     gulp.watch('assets/**/*.js').on('change', reload);
 });
 
