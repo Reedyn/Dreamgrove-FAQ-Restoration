@@ -4,19 +4,21 @@ var FAQ = (function () {
      * Run
      * Runs the script.
      */
-    var initialize = function() {
+    var initialize = function(callback) {
         API.getData('1vbYagCkfotuqbpvBr_skmw7Sz43UoprmEiXKatTMp0E', function(FAQEntries){
             var FAQList = $('#faq-list');
             for(var i = 0; i < FAQEntries.length; i++) {
-                if(FAQEntries[i].status === 'Published'){
+                if(true/*FAQEntries[i].status === 'Published'*/){
                     FAQList.append('\
-                    <article class="faq-entry" id="'+FAQEntries[i].id+'">\
-                        <h2 class="faq-entry--question">'+FAQEntries[i].question+'</h2>\
-                        <section class="faq-entry--answer">'+FAQEntries[i].answer+'</section>\
+                    <article class="faq-entry" id="'+FAQEntries[i].id+'" data-tags="'+FAQEntries[i].tags+'">\
+                        <h2 class="faq-entry--question">'+markdown.toHTML(FAQEntries[i].question)+'</h2>\
+                        <section class="faq-entry--answer">'+markdown.toHTML(FAQEntries[i].answer)+'</section>\
                     </article>');
                 }
             }
+            callback();
         });
+
     };
 
     var API = (function() {
@@ -36,7 +38,8 @@ var FAQ = (function () {
                     id: data.feed.entry[i].id.$t.substring(data.feed.entry[i].id.$t.lastIndexOf("/") + 1),
                     status: data.feed.entry[i].gsx$status.$t,
                     question: data.feed.entry[i].gsx$question.$t,
-                    answer: data.feed.entry[i].gsx$answer.$t
+                    answer: data.feed.entry[i].gsx$answer.$t,
+                    tags: data.feed.entry[i].gsx$tags.$t
                 });
             }
             return FAQEntries;
@@ -54,7 +57,16 @@ var FAQ = (function () {
         init: initialize
     };
 })();
-
+var FAQList = "";
 $(document).ready(function(){
-    FAQ.initialize();
+    FAQ.initialize(function(){
+        var options = {
+            item: '<article class="faq-entry"><h2 class="faq-entry--question"></h2><section class="faq-entry--answer"></section></article>',
+            valueNames: ['faq-entry--question', 'faq-entry'],
+            plugins: [ListFuzzySearch()],
+            searchClass: 'search'
+        };
+        FAQList = new List('main', options);
+    });
+
 });
