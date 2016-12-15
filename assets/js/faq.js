@@ -1,54 +1,80 @@
 var FAQ = (function () {
-
     /**
      * Run
      * Runs the script.
      */
     var initialize = function(callback) {
-        API.getData('1vbYagCkfotuqbpvBr_skmw7Sz43UoprmEiXKatTMp0E', function(FAQEntries){
+        API.getData(function(FAQEntries){
             var FAQList = $('#faq-list');
             for(var i = 0; i < FAQEntries.length; i++) {
                 if(true/*FAQEntries[i].status === 'Published'*/){
                     FAQList.append('\
                     <article class="faq-entry" id="'+FAQEntries[i].id+'">\
                         <span class="faq-entry--tags" style="display: none;" data-tags="'+FAQEntries[i].tags+'"></span>\
-                        <h2 class="faq-entry--question">'+markdown.toHTML(FAQEntries[i].question)+'</h2>\
-                        <section class="faq-entry--answer">'+markdown.toHTML(FAQEntries[i].answer)+'</section>\
+                        <h2 class="faq-entry--question">'+FAQEntries[i].question+'</h2>\
+                        <section class="faq-entry--answer">'+FAQEntries[i].answer+'</section>\
                     </article>');
                 }
             }
             callback();
         });
-
     };
 
     var API = (function() {
-        var _getData = function(documentId, callback){
+        var documentId = '1vbYagCkfotuqbpvBr_skmw7Sz43UoprmEiXKatTMp0E';
+        var getData = function(callback){
             "use strict";
-            var requestURL = 'https://spreadsheets.google.com/feeds/list/'+documentId+'/od6/public/full?hl=en_US&alt=json';
+            var sheetID = 'od6';
+            var requestURL = 'https://spreadsheets.google.com/feeds/list/'+documentId+'/'+sheetID+'/public/full?hl=en_US&alt=json';
             $.getJSON(requestURL, function(data){
-                console.table(_formatData(data));
-                callback(_formatData(data));
+                _formatData(data, callback);
             });
         };
 
-        var _formatData = function(data){
-            var FAQEntries = [];
-            for(var i = 0; i < data.feed.entry.length; i++){
-                FAQEntries.push({
-                    id: data.feed.entry[i].id.$t.substring(data.feed.entry[i].id.$t.lastIndexOf("/") + 1),
-                    status: data.feed.entry[i].gsx$status.$t,
-                    question: data.feed.entry[i].gsx$question.$t,
-                    answer: data.feed.entry[i].gsx$answer.$t,
-                    tags: data.feed.entry[i].gsx$tags.$t
-                });
-            }
-            return FAQEntries;
+        var _getWoWHeadLinks = function(callback){
+            var sheetID = 'o8v3ew1';
+            var requestURL = 'https://spreadsheets.google.com/feeds/list/'+documentId+'/'+sheetID+'/public/full?hl=en_US&alt=json';
+            $.getJSON(requestURL, function(data){
+                var WoWHeadLinks = [];
+                for(var i = 0; i < data.feed.entry.length; i++){
+                    WoWHeadLinks.push({
+                        linkify: data.feed.entry[i].gsx$linkify.$t,
+                        url: data.feed.entry[i].gsx$wowheadlink.$t
+                    });
+                }
+                callback(WoWHeadLinks);
+            });
         };
+
+        var _formatData = function(data, callback){
+            var FAQEntries = [];
+
+            _getWoWHeadLinks(function(WoWHeadLinks) {
+                console.log(data.feed.entry);
+                console.log(WoWHeadLinks);
+                for(var i = 0; i < data.feed.entry.length; i++){
+                    var answer = data.feed.entry[i].gsx$answer.$t;
+                    for(var w = 0; w < WoWHeadLinks.length; w++){
+                        answer = answer.split(WoWHeadLinks[w].linkify).join('['+WoWHeadLinks[w].linkify+']('+WoWHeadLinks[w].url+')')
+                    }
+                    var entry = {
+                        id: data.feed.entry[i].id.$t.substring(data.feed.entry[i].id.$t.lastIndexOf("/") + 1),
+                        status: data.feed.entry[i].gsx$status.$t,
+                        question: markdown.toHTML(data.feed.entry[i].gsx$question.$t),
+                        answer: markdown.toHTML(answer),
+                        tags: data.feed.entry[i].gsx$tags.$t
+                    };
+                    FAQEntries.push(entry);
+                }
+                callback(FAQEntries);
+            });
+        };
+
+
 
         // Make the functions public
         return {
-            getData: _getData
+            getData: getData,
         };
     })();
 
@@ -58,17 +84,15 @@ var FAQ = (function () {
         init: initialize
     };
 })();
-var FAQList = "";
-$(document).ready(function(){
-    FAQ.initialize(function(){
-        var options = {
-            item: '<article class="faq-entry"><h2 class="faq-entry--question"></h2><section class="faq-entry--answer"></section></article>',
-            valueNames: ['faq-entry--question', 'faq-entry', {name: 'faq-entry--tags', attr: 'data-tags'}],
-            plugins: [ListFuzzySearch()],
-            searchClass: 'search'
-        };
-        FAQList = new List('main', options);
-        console.log(FAQList.items);
-    });
-
+$.holdReady(true);
+FAQ.initialize(function(){
+    $.holdReady(false);
+    var options = {
+        item: '<article class="faq-entry"><h2 class="faq-entry--question"></h2><section class="faq-entry--answer"></section></article>',
+        valueNames: ['faq-entry--question', 'faq-entry', {name: 'faq-entry--tags', attr: 'data-tags'}],
+        plugins: [ListFuzzySearch()],
+        searchClass: 'search'
+    };
+    FAQList = new List('main', options);
 });
+var FAQList = "";
