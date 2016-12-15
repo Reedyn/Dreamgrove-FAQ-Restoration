@@ -10,7 +10,8 @@ var FAQ = (function () {
             for(var i = 0; i < FAQEntries.length; i++) {
                 if(true/*FAQEntries[i].status === 'Published'*/){
                     FAQList.append('\
-                    <article class="faq-entry" id="'+FAQEntries[i].id+'" data-tags="'+FAQEntries[i].tags+'">\
+                    <article class="faq-entry" id="'+FAQEntries[i].id+'">\
+                        <span class="faq-entry--tags" style="display: none;" data-tags="'+FAQEntries[i].tags+'"></span>\
                         <h2 class="faq-entry--question">'+markdown.toHTML(FAQEntries[i].question)+'</h2>\
                         <section class="faq-entry--answer">'+markdown.toHTML(FAQEntries[i].answer)+'</section>\
                     </article>');
@@ -62,11 +63,12 @@ $(document).ready(function(){
     FAQ.initialize(function(){
         var options = {
             item: '<article class="faq-entry"><h2 class="faq-entry--question"></h2><section class="faq-entry--answer"></section></article>',
-            valueNames: ['faq-entry--question', 'faq-entry'],
+            valueNames: ['faq-entry--question', 'faq-entry', {name: 'faq-entry--tags', attr: 'data-tags'}],
             plugins: [ListFuzzySearch()],
             searchClass: 'search'
         };
         FAQList = new List('main', options);
+        console.log(FAQList.items);
     });
 
 });
