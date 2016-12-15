@@ -55,7 +55,7 @@ var FAQ = (function () {
                 for(var i = 0; i < data.feed.entry.length; i++){
                     var answer = data.feed.entry[i].gsx$answer.$t;
                     for(var w = 0; w < WoWHeadLinks.length; w++){
-                        answer = answer.split(WoWHeadLinks[w].linkify).join('['+WoWHeadLinks[w].linkify+']('+WoWHeadLinks[w].url+')')
+                        answer = answer.split('['+WoWHeadLinks[w].linkify+']').join('['+WoWHeadLinks[w].linkify+']('+WoWHeadLinks[w].url+')')
                     }
                     var entry = {
                         id: data.feed.entry[i].id.$t.substring(data.feed.entry[i].id.$t.lastIndexOf("/") + 1),
