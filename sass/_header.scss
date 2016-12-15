@@ -1,0 +1,38 @@
+header {
+    background: rgba(0,0,0,0.3);
+    .site-logo {
+        position: relative;
+        padding-left: 90px;
+        margin: 50px 0;
+        &:before{
+            left: 0;
+            position: absolute;
+            content: "";
+            height: 70px;
+            width: 70px;
+            background-image: url(../img/thumbnail.png);
+            display: inline-block;
+            background-size: contain;
+            vertical-align: top;
+            margin-right: 25px;
+        }
+        .site-name {
+            line-height:100%;
+            margin: 0;
+        }
+        .site-name--spec {
+            color: #97db46;
+        }
+    }
+
+    .site-search {
+        .search {
+            width: 100%;
+            border: 0;
+            padding: 10px;
+            border-radius: 5px;
+            outline: 0;
+            font-size:17px;
+        }
+    }
+}

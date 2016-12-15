@@ -91,8 +91,8 @@ FAQ.initialize(function(){
         item: '<article class="faq-entry"><h2 class="faq-entry--question"></h2><section class="faq-entry--answer"></section></article>',
         valueNames: ['faq-entry--question', 'faq-entry', {name: 'faq-entry--tags', attr: 'data-tags'}],
         plugins: [ListFuzzySearch()],
-        searchClass: 'search'
+        searchClass: 'search',
     };
-    FAQList = new List('main', options);
+    FAQList = new List('body', options);
 });
 var FAQList = "";

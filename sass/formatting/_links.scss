@@ -1,0 +1,10 @@
+a {
+    color: #f8b700;
+}
+
+a[href^="http://www.wowhead"]{
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}

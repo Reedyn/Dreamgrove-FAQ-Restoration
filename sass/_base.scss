@@ -1,0 +1,16 @@
+.wrapper {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 30px;
+    overflow: hidden;
+}
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font: 400 17px/175% Noto Sans, sans-serif;
+    color: rgba(255,255,255,0.7);
+    background: url(../img/top.jpg) center -200px no-repeat,url(../img/repeat.jpg) center 1800px repeat-y #222017
+}

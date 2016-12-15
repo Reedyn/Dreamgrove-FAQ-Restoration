@@ -23,6 +23,7 @@ gulp.task('styles', function() {
         .pipe(minifycss())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('assets/css/'))
+        .pipe(reload({stream: true}));
 });
 
 gulp.task('serve', ['styles'], function() {
