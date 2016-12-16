@@ -104,13 +104,18 @@ FAQ.initialize(function(){
     FAQList = new List('body', options);
     FAQList.on('searchComplete', function(){
         var search = $('#search').val();
+        var isDirectLink = (window.location.hash.indexOf('question') >= 0);
+        console.log(isDirectLink);
+
         if(search.length > 0){
             window.history.pushState('', '', '#/search/'+search);
-        } else if (!window.location.hash.substr('question').length > 0) {
+        } else if (isDirectLink){
+
+        } else {
             window.history.pushState('', '', '#/');
         }
 
-        if(FAQList.matchingItems.length <= 2){
+        if(FAQList.matchingItems.length < 3){
             $('.faq-entry').addClass('active');
         } else {
             $('.faq-entry').removeClass('active');
