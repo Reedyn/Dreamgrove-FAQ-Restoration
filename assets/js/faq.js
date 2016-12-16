@@ -103,10 +103,12 @@ FAQ.initialize(function(){
     };
     FAQList = new List('body', options);
     FAQList.on('searchComplete', function(){
-        if(window.location.hash.indexOf("search")){
-            window.history.pushState('', '', '#/search/'+$('#search').val());
+        var search = $('#search').val();
+        if(search.length > 0){
+            window.history.pushState('', '', '#/search/'+search);
+        } else {
+            window.history.pushState('', '', '#/');
         }
-
 
         if(FAQList.matchingItems.length <= 2){
             $('.faq-entry').addClass('active');
