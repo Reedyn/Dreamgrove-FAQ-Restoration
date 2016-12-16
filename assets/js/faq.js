@@ -99,9 +99,16 @@ FAQ.initialize(function(){
         item: '<article class="faq-entry"><h2 class="faq-entry--question"></h2><section class="faq-entry--answer"></section></article>',
         valueNames: ['faq-entry--question', 'faq-entry', {name: 'faq-entry--tags', attr: 'data-tags'}],
         plugins: [ListFuzzySearch()],
-        searchClass: 'search',
+        searchClass: 'search'
     };
     FAQList = new List('body', options);
+    FAQList.on('searchComplete', function(){
+        if(FAQList.matchingItems.length <= 2){
+            $('.faq-entry').addClass('active');
+        } else {
+            $('.faq-entry').removeClass('active');
+        }
+    })
 });
 
 $(document).ready(function(){
