@@ -50,8 +50,17 @@ var FAQ = (function () {
             var FAQEntries = [];
 
             _getWoWHeadLinks(function(WoWHeadLinks) {
-                console.log(data.feed.entry);
-                console.log(WoWHeadLinks);
+                var converter = new showdown.Converter();
+                converter.setOption('omitExtraWLInCodeBlocks', 'true');
+                converter.setOption('prefixHeaderId', 'true');
+                converter.setOption('simplifiedAutoLink', 'true');
+                converter.setOption('excludeTrailingPunctuationFromURLs', 'true');
+                converter.setOption('literalMidWordUnderscores', 'true');
+                converter.setOption('strikethrough', 'true');
+                converter.setOption('tables', 'true');
+                converter.setOption('ghCodeBlocks', 'true');
+                converter.setOption('simpleLineBreaks', 'true');
+
                 for(var i = 0; i < data.feed.entry.length; i++){
                     var answer = data.feed.entry[i].gsx$answer.$t;
                     for(var w = 0; w < WoWHeadLinks.length; w++){
@@ -60,8 +69,8 @@ var FAQ = (function () {
                     var entry = {
                         id: data.feed.entry[i].id.$t.substring(data.feed.entry[i].id.$t.lastIndexOf("/") + 1),
                         status: data.feed.entry[i].gsx$status.$t,
-                        question: markdown.toHTML(data.feed.entry[i].gsx$question.$t),
-                        answer: markdown.toHTML(answer),
+                        question: converter.makeHtml(data.feed.entry[i].gsx$question.$t),
+                        answer: converter.makeHtml(answer),
                         tags: data.feed.entry[i].gsx$tags.$t
                     };
                     FAQEntries.push(entry);
