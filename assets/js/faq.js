@@ -103,4 +103,10 @@ FAQ.initialize(function(){
     };
     FAQList = new List('body', options);
 });
+
+$(document).ready(function(){
+    $('.faq-entry--question').click(function(){
+        $(this).parent().toggleClass('active');
+    })
+});
 var FAQList = "";
