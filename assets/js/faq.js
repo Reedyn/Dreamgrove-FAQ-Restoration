@@ -103,12 +103,17 @@ FAQ.initialize(function(){
     };
     FAQList = new List('body', options);
     FAQList.on('searchComplete', function(){
+        if(window.location.hash.indexOf("search")){
+            window.history.pushState('', '', '#/search/'+$('#search').val());
+        }
+
+
         if(FAQList.matchingItems.length <= 2){
             $('.faq-entry').addClass('active');
         } else {
             $('.faq-entry').removeClass('active');
         }
-    })
+    });
     $.holdReady(false);
 });
 
@@ -126,7 +131,6 @@ $(document).ready(function(){
     // adding routes
     Router
         .add(/search\/(.*)/, function() {
-            console.log(arguments);
             $('#search').val(arguments[0]);
             FAQList.search(arguments[0]);
         })
