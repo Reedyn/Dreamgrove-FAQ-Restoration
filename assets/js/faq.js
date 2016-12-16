@@ -11,7 +11,8 @@ var FAQ = (function () {
                     FAQList.append('\
                     <article class="faq-entry" id="'+FAQEntries[i].id+'">\
                         <span class="faq-entry--tags" style="display: none;" data-tags="'+FAQEntries[i].tags+'"></span>\
-                        <h2 class="faq-entry--question">'+FAQEntries[i].question+'</h2>\
+                        <span class="faq-entry--id" style="display: none;" data-id="'+FAQEntries[i].id+'"></span>\
+                        <h2 class="faq-entry--question"><a href="#/question/'+FAQEntries[i].id+'">'+FAQEntries[i].question+'</a></h2>\
                         <section class="faq-entry--answer">'+FAQEntries[i].answer+'</section>\
                     </article>');
                 }
@@ -94,10 +95,9 @@ var FAQ = (function () {
 })();
 $.holdReady(true);
 FAQ.initialize(function(){
-    $.holdReady(false);
     var options = {
         item: '<article class="faq-entry"><h2 class="faq-entry--question"></h2><section class="faq-entry--answer"></section></article>',
-        valueNames: ['faq-entry--question', 'faq-entry', {name: 'faq-entry--tags', attr: 'data-tags'}],
+        valueNames: ['faq-entry--question', 'faq-entry', {name: 'faq-entry--tags', attr: 'data-tags'}, {name: 'faq-entry--id', attr: 'data-id'}],
         plugins: [ListFuzzySearch()],
         searchClass: 'search'
     };
@@ -109,11 +109,32 @@ FAQ.initialize(function(){
             $('.faq-entry').removeClass('active');
         }
     })
+    $.holdReady(false);
 });
 
+
+
 $(document).ready(function(){
-    $('.faq-entry--question').click(function(){
+    $('.faq-entry--question').click(function(e){
+        e.preventDefault();
         $(this).parent().toggleClass('active');
-    })
+    });
+
+    // configuration
+    Router.config({ mode: 'hash'});
+
+    // adding routes
+    Router
+        .add(/search\/(.*)/, function() {
+            console.log(arguments);
+            $('#search').val(arguments[0]);
+            FAQList.search(arguments[0]);
+        })
+        .add(/question\/(.*)/,function(){
+            FAQList.search(arguments[0]);
+        })
+        .check()
+        .listen();
 });
 var FAQList = "";
+

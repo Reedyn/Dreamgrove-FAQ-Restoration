@@ -14,8 +14,12 @@
             border-left: 15px solid white;
             margin-right:10px;
         }
+        a {
+            color: white;
+            text-decoration: none;
+        }
         p {
-            display: inline-block;
+            display: inline;
         }
     }
     .faq-entry--answer {
@@ -26,9 +30,11 @@
 
     &.active {
         .faq-entry--question {
+            color: white;
             &:before {
                 transform: rotate(90deg);
             }
+
         }
     }
     &:not(.active){
