@@ -7,7 +7,7 @@ var FAQ = (function () {
         API.getData(function(FAQEntries){
             var FAQList = $('#faq-list');
             for(var i = 0; i < FAQEntries.length; i++) {
-                if(true/*FAQEntries[i].status === 'Published'*/){
+                if(FAQEntries[i].status === 'Published'){
                     FAQList.append('\
                     <article class="faq-entry" id="'+FAQEntries[i].id+'">\
                         <span class="faq-entry--tags" style="display: none;" data-tags="'+FAQEntries[i].tags+'"></span>\
@@ -83,7 +83,7 @@ var FAQ = (function () {
 
         // Make the functions public
         return {
-            getData: getData,
+            getData: getData
         };
     })();
 
