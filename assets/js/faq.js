@@ -104,7 +104,7 @@ FAQ.initialize(function(){
     FAQList = new List('body', options);
     FAQList.on('searchComplete', function(){
         var search = $('#search').val();
-
+        var isDirectLink = window.location.hash.indexOf('question') >= 0;
         if(search.length > 0){
             window.history.pushState('', '', '#/search/'+search);
         } else if (isDirectLink){
