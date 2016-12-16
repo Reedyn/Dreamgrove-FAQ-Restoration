@@ -59,7 +59,6 @@ var FAQ = (function () {
                 converter.setOption('strikethrough', 'true');
                 converter.setOption('tables', 'true');
                 converter.setOption('ghCodeBlocks', 'true');
-                converter.setOption('simpleLineBreaks', 'true');
 
                 for(var i = 0; i < data.feed.entry.length; i++){
                     var answer = data.feed.entry[i].gsx$answer.$t;
