@@ -106,7 +106,7 @@ FAQ.initialize(function(){
         var search = $('#search').val();
         if(search.length > 0){
             window.history.pushState('', '', '#/search/'+search);
-        } else {
+        } else if (!window.location.hash.substr('question').length > 0) {
             window.history.pushState('', '', '#/');
         }
 
