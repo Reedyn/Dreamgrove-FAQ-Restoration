@@ -110,7 +110,8 @@ FAQ.initialize(function(){
         if(search.length > 0){
             window.history.pushState('', '', '#/search/'+search);
         } else if (isDirectLink){
-            console.log('Direct Link');
+            $('meta[property="og:title"]').attr('content',$(FAQList.matchingItems[0].elm).find('.faq-entry--question').text());
+            $('meta[property="og:description"]').attr('content',$(FAQList.matchingItems[0].elm).find('.faq-entry--answer').text());
         } else {
             window.history.pushState('', '', '#/');
         }
