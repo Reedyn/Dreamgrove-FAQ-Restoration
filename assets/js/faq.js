@@ -112,6 +112,8 @@ FAQ.initialize(function(){
         } else if (isDirectLink){
             $('meta[property="og:title"]').attr('content',$(FAQList.matchingItems[0].elm).find('.faq-entry--question').text());
             $('meta[property="og:description"]').attr('content',$(FAQList.matchingItems[0].elm).find('.faq-entry--answer').text());
+            $('meta[property="twitter:description"]').attr('content',$(FAQList.matchingItems[0].elm).find('.faq-entry--answer').text());
+            $('meta[name="description"]').attr('content',$(FAQList.matchingItems[0].elm).find('.faq-entry--answer').text());
         } else {
             window.history.pushState('', '', '#/');
         }
